@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+    <head>
+        <title>CRUD-Alumno</title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    </head>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+	    <a class="navbar-brand" href="#">Sistema Académico</a>
+	    <div class="ms-auto d-flex align-items-center">
+	        <span class="text-white me-3" 
+	              th:if="${session.usuarioLogueado != null}" 
+	              th:text="'Bienvenido, ' + ${session.usuarioLogueado.usuario}">
+	        </span>
+	        <a href="/logout" class="btn btn-outline-danger btn-sm">Cerrar Sesión</a>
+	    </div>
+	</nav>
+    <body>
+        <div class="container">
+			<br>
+			<a href="/newAlumn" class="btn btn-primary">Nuevo</a>
+			
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Código</th>
+						<th>Nombre</th>
+						<th>Apellido</th>
+						<th>Email</th>				
+						<th>Cursos</th>		
+						<th>Operaciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each = "alumno: ${alumnoss}">
+						<td th:text = "${alumno.codigo}"></td>
+						<td th:text = "${alumno.nombre}"></td>
+						<td th:text = "${alumno.apellido}"></td>
+						<td th:text = "${alumno.email}"></td>		
+						<td>
+							<span th:each = "curso: ${alumno.cursoList}" class="badge bg-info text-dark me-1" th:text = "${curso.nombre}"></span>
+							<span th:if = "${#lists.isEmpty(alumno.cursoList)}" class="text-muted small">Ninguno</span>
+						</td>										
+						<td>
+							<a th:href="@{/editarAlumno/{codigo}(codigo = ${alumno.codigo})}" class="btn btn-warning">Editar</a>
+							<a th:href="@{/eliminarAlumno/{codigo}(codigo = ${alumno.codigo})}" class="btn btn-danger">Eliminar</a>
+						</td>
+					</tr>					
+				</tbody>
+			</table>
+		</div>
+    </body>
+</html>
